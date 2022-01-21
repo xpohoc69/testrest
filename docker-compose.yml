@@ -1,0 +1,30 @@
+version: '3'
+services:
+    nginx:
+        image: nginx:alpine
+        volumes:
+            - ./docker/nginx/conf/app.conf:/etc/nginx/conf.d/default.conf:delegated
+            - ./:/app:delegated
+        ports:
+            - '8222:80'
+        depends_on:
+            - php-fpm
+    php-fpm:
+        working_dir: /app
+        build: ./docker/php-fpm
+        environment:
+            PHP_IDE_CONFIG: "serverName=testrest.local"
+        volumes:
+            - ./docker/php-fpm/conf/99-overrides.ini:/usr/local/etc/php/conf.d/99-overrides.ini:delegated
+            - ./:/app:delegated
+            - composer-cache:/root/.composer:delegated
+    redis:
+        image: 'bitnami/redis:latest'
+        environment:
+            - ALLOW_EMPTY_PASSWORD=yes
+        ports:
+            - '6379:6379'
+
+volumes:
+    composer-cache:
+        external: false

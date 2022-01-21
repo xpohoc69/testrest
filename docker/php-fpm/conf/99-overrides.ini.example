@@ -1,0 +1,8 @@
+xdebug.mode=debug
+xdebug.start_with_request=yes
+xdebug.discover_client_host=true
+xdebug.client_port=9222
+
+;эта настройка для винды и macos, для linux должен быть ip, читать
+;https://blog.denisbondar.com/post/phpstorm_docker_xdebug
+xdebug.client_host=host.docker.internal
