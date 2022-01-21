@@ -9,6 +9,7 @@ use yii\redis\Connection;
 class StatRepository implements StatRepositoryContract
 {
 	private Connection $storage;
+	private const STAT_KEY = 'stat';
 
 	public function __construct($storage)
 	{
@@ -17,13 +18,13 @@ class StatRepository implements StatRepositoryContract
 
 	public function add(string $country): bool
 	{
-		$count = $this->storage->hincrby('stat', $country, 1);
+		$count = $this->storage->hincrby(self::STAT_KEY, $country, 1);
 
 		return is_integer($count);
 	}
 
 	public function findAll(): array
 	{
-		return $this->storage->hgetall('stat');
+		return $this->storage->hgetall(self::STAT_KEY);
 	}
 }
